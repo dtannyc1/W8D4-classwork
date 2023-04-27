@@ -8,7 +8,10 @@ export default class Bird {
 
     drawBird(ctx) {
         ctx.fillStyle = "yellow";
-        ctx.fillRect(this.x-20, this.y-15, 40, 30);
+        ctx.fillRect(this.x-CONSTANTS.BIRD_WIDTH/2,
+                     this.y-CONSTANTS.BIRD_HEIGHT/2,
+                     CONSTANTS.BIRD_WIDTH,
+                     CONSTANTS.BIRD_HEIGHT);
     }
 
     animate(ctx) {
@@ -17,14 +20,25 @@ export default class Bird {
     }
 
     move() {
-        this.y += this.vel; 
+        this.y += this.vel;
         this.vel += CONSTANTS.GRAVITY;
+        if (this.vel > CONSTANTS.TERMINAL_VEL) {
+            this.vel = CONSTANTS.TERMINAL_VEL;
+        }
     }
 
     flap() {
         this.vel = CONSTANTS.FLAP_SPEED;
     }
 
+    getBounds() {
+        let output = ({});
+        output.topLeftX = this.x - CONSTANTS.BIRD_WIDTH/2;
+        output.topLeftY = this.y - CONSTANTS.BIRD_HEIGHT/2;
+        output.bottomRightX = this.x + CONSTANTS.BIRD_WIDTH/2;
+        output.bottomRightY = this.y + CONSTANTS.BIRD_HEIGHT/2;
+        return output;
+    }
 }
 
 const CONSTANTS = {
@@ -33,4 +47,4 @@ const CONSTANTS = {
     TERMINAL_VEL:  12,
     BIRD_WIDTH:  40,
     BIRD_HEIGHT:  30
-  };
+};

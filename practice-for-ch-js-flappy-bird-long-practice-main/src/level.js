@@ -1,9 +1,12 @@
 export default class Level {
     constructor(dimensions) {
         this.dimensions = dimensions;
-        this.pipes = [({x:   0, y: Math.random()*(this.dimensions.height-CONSTANTS.GAP_SIZE)}),
-                      ({x: CONSTANTS.DX, y: Math.random()*(this.dimensions.height-CONSTANTS.GAP_SIZE)}),
-                      ({x: CONSTANTS.DX * 2, y: Math.random()*(this.dimensions.height-CONSTANTS.GAP_SIZE)})];
+        this.pipes = [({x: 0 + this.dimensions.width*2,
+                        y: Math.random()*(this.dimensions.height-CONSTANTS.GAP_SIZE)}),
+                      ({x: CONSTANTS.DX + this.dimensions.width*2,
+                        y: Math.random()*(this.dimensions.height-CONSTANTS.GAP_SIZE)}),
+                      ({x: CONSTANTS.DX * 2 + this.dimensions.width*2,
+                        y: Math.random()*(this.dimensions.height-CONSTANTS.GAP_SIZE)})];
     }
 
     drawBackground(ctx) {
@@ -35,6 +38,19 @@ export default class Level {
             this.pipes.push(({x: this.pipes[this.pipes.length-1].x + CONSTANTS.DX, y: Math.random()*(this.dimensions.height-CONSTANTS.GAP_SIZE)}));
         }
     }
+
+    collidesWith(bounds) {
+        let output = false;
+        this.pipes.forEach((pipe) => {
+            if (!(pipe.x > bounds.bottomRightX || pipe.x + CONSTANTS.PIPE_WIDTH < bounds.topLeftX)) {
+                if (pipe.y > bounds.topLeftY || pipe.y + CONSTANTS.GAP_SIZE < bounds.bottomRightY) {
+                    // console.log("hit")
+                    output = true;
+                }
+            }
+        });
+        return output;
+    }
 }
 
 const CONSTANTS = {
@@ -42,4 +58,4 @@ const CONSTANTS = {
     DX:  220,
     PIPE_WIDTH:  50,
     PIPE_SPEED: -2
-  };
+};

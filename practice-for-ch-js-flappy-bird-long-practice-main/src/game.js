@@ -12,6 +12,11 @@ export default class FlappyBird {
     animate() {
         this.level.animate(this.ctx);
         this.bird.animate(this.ctx);
+        if (this.lose()) {
+            // console.log("you lose")
+            alert("You Lose!")
+            this.restart();
+        }
         if (this.running) {
             requestAnimationFrame(this.animate.bind(this));
         }
@@ -25,7 +30,7 @@ export default class FlappyBird {
     }
 
     play() {
-        this.running = true; 
+        this.running = true;
         this.animate();
     }
 
@@ -35,5 +40,11 @@ export default class FlappyBird {
         } else {
             this.play();
         }
+    }
+
+    lose() {
+        return (this.level.collidesWith(this.bird.getBounds()) ||
+                this.bird.getBounds().topLeftY < 0 ||
+                this.bird.getBounds().bottomRightY > this.dimensions.height)
     }
 }
