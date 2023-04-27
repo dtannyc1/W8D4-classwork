@@ -35,11 +35,11 @@ function sum(...args) {
 
 // };
 
-Function.prototype.myBind = function(...args) {
+Function.prototype.myBind = function(context, ...args) {
     let that = this;
 
     return function(...args2) {
-        that.call(...args, ...args2);
+        that.call(context, ...args, ...args2);
     };
 };
 
@@ -47,39 +47,39 @@ class Cat {
     constructor(name) {
       this.name = name;
     }
-  
+
     says(sound, person) {
       console.log(`${this.name} says ${sound} to ${person}!`);
       return true;
     }
   }
-  
+
   class Dog {
     constructor(name) {
       this.name = name;
     }
   }
-  
+
   const markov = new Cat("Markov");
   const pavlov = new Dog("Pavlov");
-  
+
   markov.says("meow", "Ned");
   // Markov says meow to Ned!
   // true
-  
+
   markov.says.myBind(pavlov, "meow", "Kush")();
   // Pavlov says meow to Kush!
   // true
- 
+
   markov.says.myBind(pavlov)("meow", "a tree");
   // Pavlov says meow to a tree!
   // true
-  
+
   markov.says.myBind(pavlov, "meow")("Markov");
   // Pavlov says meow to Markov!
   // true
-  
-  
+
+
   const notMarkovSays = markov.says.myBind(pavlov);
   notMarkovSays("meow", "me");
   // Pavlov says meow to me!
