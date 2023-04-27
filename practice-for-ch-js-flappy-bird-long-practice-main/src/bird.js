@@ -12,6 +12,25 @@ export default class Bird {
     }
 
     animate(ctx) {
+        this.move();
         this.drawBird(ctx);
     }
+
+    move() {
+        this.y += this.vel; 
+        this.vel += CONSTANTS.GRAVITY;
+    }
+
+    flap() {
+        this.vel = CONSTANTS.FLAP_SPEED;
+    }
+
 }
+
+const CONSTANTS = {
+    GRAVITY:  0.5,
+    FLAP_SPEED:  -8,
+    TERMINAL_VEL:  12,
+    BIRD_WIDTH:  40,
+    BIRD_HEIGHT:  30
+  };
